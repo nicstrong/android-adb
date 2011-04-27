@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'popen4'
-require "pp"
 
 module AndroidAdb
 

@@ -17,8 +17,5 @@ Gem::Specification.new do |s|
       'README.md',
     ]
 
-    s.executables = []
-    s.extra_rdoc_files = [ 'README,md', 'LICENSE', ]
-    #s.test_files = Dir.glob( 'test/*-test.rb' )
-    s.has_rdoc = true
+    s.add_runtime_dependency('popen4', '~> 0.1.1')
 end

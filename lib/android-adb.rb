@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'popen4'
+require 'POpen4'
 
 module AndroidAdb
 
@@ -9,8 +9,7 @@ module AndroidAdb
     def initialize(opts = {})
       @show_stderr = opts[:show_stderr] || false
       @dry_run = opts[:dry_run] || false
-      # @adb_path = opts[:adb_path] || 'C:\Andriod\android-sdk-windows\platform-tools\adb.exe'
-      @adb_path = opts[:adb_path] || '/Library/android-sdk-mac_x86/platform-tools/adb'
+      @adb_path = opts[:adb_path] || Adb.find_adb
     end # def
 
     def get_devices
@@ -63,7 +62,7 @@ module AndroidAdb
     private
     def run(path, &block)
       if @dry_run
-        puts "#{path}"
+        puts "[#{path}]"
         return
       end
       POpen4::popen4(path) do |pout, perr, pin|
@@ -76,6 +75,12 @@ module AndroidAdb
       end
     end # def
 
+    def self.find_adb
+      which_adb = `which adb`.strip
+      return which_adb if which_adb != ""
+      return ENV['ANDROID_HOME'] + "platform-tool/adb" if ENV['ANDROID_HOME'] != ""
+      return "adb"
+    end
   end # class
 end # module
 

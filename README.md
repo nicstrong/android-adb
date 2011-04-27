@@ -3,6 +3,10 @@ Android ADB
 
 A ruby gem to bind to the various adb commands (Requires the Android SDK to be installed and tools directory to be in the path).
 
+### Installation from GitHub sources
+
+    gem install --source http://gems.github.com nicstrong-android-adb
+
 ### Running on Ruby 1.9 under Win32
 
 The POpen4 gem uses win32/open3 on then win32 platform. This gem does not work with Ruby 1.9.

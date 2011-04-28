@@ -1,8 +1,9 @@
 #!/usr/bin/env ruby -wKU
 
 require 'rubygems'
-require "android-adb"
 require "pp"
+
+require File.expand_path('../lib/android-adb', File.dirname(__FILE__))
 
 adb = AndroidAdb::Adb.new()
 puts "Packages:"

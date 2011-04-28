@@ -1,0 +1,24 @@
+PATH
+  remote: .
+  specs:
+    android-adb (0.0.3)
+      POpen4 (~> 0.1.4)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    POpen4 (0.1.4)
+      Platform (>= 0.4.0)
+      open4
+    Platform (0.4.0)
+    open4 (1.0.1)
+    rake (0.8.7)
+
+PLATFORMS
+  ruby
+  x86-mingw32
+
+DEPENDENCIES
+  android-adb!
+  bundler (~> 1.0)
+  rake (~> 0.8)

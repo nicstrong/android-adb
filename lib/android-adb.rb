@@ -17,7 +17,7 @@ module AndroidAdb
       run_adb("devices") do |pout|
         pout.each do |line|
           line = line.strip
-          if (line !~ /^List of devices/ && line != "")
+          if (!line.empty? && line !~ /^List of devices/)
             parts = line.split
             devices << {:name   => parts[0],
                         :serial => parts[1]}
@@ -55,7 +55,7 @@ module AndroidAdb
     end # def
 
     def run_adb_shell(args, &block)
-      path = "#{@adb_path} shell \"#{args}\""
+      path = "#{@adb_path} shell #{args}"
       run(path, &block)
     end
 
@@ -76,9 +76,13 @@ module AndroidAdb
     end # def
 
     def self.find_adb
-      which_adb = `which adb`.strip
-      return which_adb if which_adb != ""
-      return ENV['ANDROID_HOME'] + "platform-tool/adb" if ENV['ANDROID_HOME'] != ""
+      begin
+        which_adb = `which adb`.strip
+        return which_adb if !which_adb.nil? && !which_adb.empty?
+      rescue
+      end
+      android_home = ENV['ANDROID_HOME']
+      return File.join(android_homes, "platform-tool/adb") if !android_home.nil? && !android_home.empty
       return "adb"
     end
   end # class

@@ -1,8 +1,9 @@
+require File.expand_path('../lib/android-adb/version', __FILE__)
+
 Gem::Specification.new do |s|
     s.name = 'android-adb'
-    s.version = '0.0.3'
+    s.version = AndroidAdb::VERSION.dup
     s.summary = 'Ruby bindings for the Android SDK adb command.'
-    #s.rubyforge_project = 'android-adb'
 
     s.authors = [ 'nicstrong' ]
     s.email = 'nic dot strong at gmail dot net'
@@ -17,5 +18,7 @@ Gem::Specification.new do |s|
       'README.md',
     ]
 
+    s.add_development_dependency('bundler',  '~> 1.0')
+    s.add_development_dependency('rake', '~> 0.8')
     s.add_runtime_dependency('POpen4', '~> 0.1.4')
 end

@@ -21,9 +21,10 @@ Jeweler::Tasks.new do |gem|
   #gem.description = %Q{TODO: longer description of your gem}
   gem.email = "nic.strong@gmail.com"
   gem.authors = ["Nic Strong"]
-  gem.add_development_dependency('bundler',  '~> 1.0')
-  gem.add_development_dependency('rake', '~> 0.8')
-  gem.add_runtime_dependency('POpen4', '~> 0.1.4')
+  #gem.add_development_dependency('bundler',  '~> 1.0')
+  #gem.add_development_dependency('rake', '~> 0.8')
+  #gem.add_development_dependency('jeweler', '~> 1.5.2')
+  #gem.add_runtime_dependency('POpen4', '~> 0.1.4')
 end
 Jeweler::RubygemsDotOrgTasks.new
 

@@ -18,7 +18,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  POpen4 (>= 0.1.4)
-  bundler (~> 1.0.0)
+  POpen4 (~> 0.1.4)
+  bundler (~> 1.0)
   jeweler (~> 1.5.2)
   rcov

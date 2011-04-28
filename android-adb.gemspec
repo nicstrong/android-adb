@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
     "LICENSE",
     "README.md",
     "Rakefile",
+    "android-adb.gemspec",
     "examples/listpackages.rb",
     "examples/showcmds.rb",
     "lib/android-adb.rb",

@@ -2,3 +2,5 @@
 *.swp
 pkg
 examples/t.rb
+.DS_Store
+rdoc/

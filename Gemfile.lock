@@ -13,6 +13,7 @@ GEM
     open4 (1.0.1)
     rake (0.8.7)
     rcov (0.9.9)
+    yard (0.6.8)
 
 PLATFORMS
   ruby
@@ -23,3 +24,4 @@ DEPENDENCIES
   jeweler (~> 1.5.2)
   rake
   rcov
+  yard (>= 0.6.8)

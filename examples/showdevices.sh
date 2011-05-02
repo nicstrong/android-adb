@@ -4,8 +4,8 @@ require 'rubygems'
 require "pp"
 
 require File.expand_path('../lib/android-adb/Adb', File.dirname(__FILE__))
-require File.expand_path('../lib/android-adb/Package', File.dirname(__FILE__))
+require File.expand_path('../lib/android-adb/Device', File.dirname(__FILE__))
 
 adb = AndroidAdb::Adb.new()
-puts "Packages:"
-pp adb.get_packages
+puts "Devices:"
+pp adb.get_devices

@@ -7,7 +7,7 @@ require 'android-adb/Package'
 require 'android-adb/Adb'
 
 module AndroidAdb
- LIBRARY_PATH       = File.join(File.dirname(__FILE__), 'android-adb')
+  LIBRARY_PATH       = File.join(File.dirname(__FILE__), 'android-adb')
 end # module
 
 

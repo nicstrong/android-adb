@@ -2,7 +2,7 @@
 # Copyright:: Copyright (c) 2011 Nic Strong
 # License::   MIT (See LICENSE)
 
-require 'POpen4'
+require 'Open3'
 
 module AndroidAdb
 
@@ -109,7 +109,7 @@ module AndroidAdb
         puts "[#{path}]"
         return
       end
-      POpen4::popen4(path) do |pout, perr, pin|
+      Open3::popen3(path) do |pin, pout, perr|
         if (@show_stderr)
           perr.each do |line|
             puts "{e}" + line

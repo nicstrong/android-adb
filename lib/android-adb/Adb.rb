@@ -3,6 +3,7 @@
 # License::   MIT (See LICENSE)
 
 require 'Open3'
+require 'Platform'
 
 module AndroidAdb
 
@@ -126,7 +127,13 @@ module AndroidAdb
       rescue
       end
       android_home = ENV['ANDROID_HOME']
-      return File.join(android_home, "platform-tool/adb") if !android_home.nil? && !android_home.empty
+      if !android_home.nil? && !android_home.empty?
+        adb_cmd = File.join(android_home, "platform-tools", "adb")
+        if (Platform::OS == :win32)
+          adb_cmd += ".exe"
+        end
+        return adb_cmd
+      end
       return "adb"
     end
   end # class

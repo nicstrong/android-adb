@@ -8,7 +8,14 @@ require 'Platform'
 module AndroidAdb
 
   class Adb
-    attr_accessor :adb_path, :show_stderr, :dry_run, :last_command
+    # Path to adb command.
+    attr_accessor :adb_path
+    # Log4r logger to send diagnostic information too.
+    attr_accessor :log
+    # If true, does not execute the *adb* command. Will still log the command and set last_command.
+    attr_accessor :dry_run
+    # The last adb shell command executed
+    attr_accessor :last_command
 
     # Contructs an Adb object for issuing commands to the connected device or emulator.
     #
@@ -18,11 +25,11 @@ module AndroidAdb
     # 3. Default to adb (no path specified).
     #
     # @param [Hash] opts The options to create the Adb object with.
-    # @option opts [Boolean] :show_stderr Used for diagnosing issues, it will dump the stderr of the *adb* command being processed.
-    # @option opts [Boolean] :dry_run Does not execute the *adb* command but will output the command that would be run.
+    # @option opts [Logger] :log A log4r logger that debug information can be sent too.
+    # @option opts [Boolean] :dry_run Does not execute the *adb* command but will log the command and set last_command.
     # @option opts [Boolean] :adb_path Manually set the path to the adb binary.
     def initialize(opts = {})
-      @show_stderr = opts[:show_stderr] || false
+      @log = opts[:log] || nil
       @dry_run = opts[:dry_run] || false
       @adb_path = opts[:adb_path] || Adb.find_adb
     end
@@ -52,6 +59,7 @@ module AndroidAdb
       packages = []
       run_adb_shell("pm list packages -f", adb_opts) do |pout|
         pout.each do |line|
+          @log.debug("{stdout} #{line}") unless @log.nil?
           parts = line.split(":")
           if (parts.length > 1)
             info = parts[1].strip.split("=")
@@ -87,9 +95,9 @@ module AndroidAdb
     # @yield [stdout] The standard output of the adb command.
     def run_adb(args, adb_opts = {}, &block) # :yields: stdout
       adb_arg = ""
-      adb_arg += " -s #{adb_opts[:serial]}" if !adb_opts[:serial].nil? && !adb_opts[:serial].empty?
-      adb_arg += " -e #{adb_opts[:emulator]}" if adb_opts[:emulator]
-      adb_arg += " -d #{adb_opts[:device]}" if adb_opts[:emulator]
+      adb_arg += " -s #{adb_opts[:serial]}" unless adb_opts[:serial].nil? || adb_opts[:serial].empty?
+      adb_arg += " -e" if adb_opts[:emulator]
+      adb_arg += " -d" if adb_opts[:device]
       path = "#{@adb_path}#{adb_arg} #{args}"
       last_command = path
       run(path, &block)
@@ -106,14 +114,15 @@ module AndroidAdb
 
     private
     def run(path, &block)
+      @last_command = path 
       if @dry_run
-        puts "[#{path}]"
+        @log.debug("Adb Command: #{path}") unless @log.nil? || !@log.debug
         return
       end
       Open3::popen3(path) do |pin, pout, perr|
-        if (@show_stderr)
+        if (!@log.nil? && @log.debug?)
           perr.each do |line|
-            puts "{e}" + line
+            @log.debug("{stderr} #{line}")
           end
         end
         yield pout
@@ -123,7 +132,7 @@ module AndroidAdb
     def self.find_adb
       begin
         which_adb = `which adb`.strip
-        return which_adb if !which_adb.nil? && !which_adb.empty?
+        return which_adb unless which_adb.nil? || which_adb.empty?
       rescue
       end
       android_home = ENV['ANDROID_HOME']

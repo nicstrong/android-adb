@@ -7,4 +7,5 @@ group :development do
   gem "bundler", "~> 1.0.0"
   gem "jeweler", "~> 1.5.2"
   gem "yard", ">= 0.6.8"
+  gem "log4r", ">= 1.1.9"
 end

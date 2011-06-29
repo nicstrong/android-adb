@@ -20,4 +20,5 @@ bin/*.log
 *.swp
 examples/t.rb
 .DS_Store
+*.tws
 

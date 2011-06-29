@@ -70,6 +70,29 @@ module AndroidAdb
       end
       return packages
     end
+    
+		def monkey(count, opts = {}, adb_opts = {})
+      opt_arg = ""
+      opt_arg += " -p #{opts[:package]}" if opts[:package]
+      opt_arg += " --pct-touch #{opts[:pct_touch]}" if opts[:pct_touch]
+      opt_arg += " --pct-motion #{opts[:pct_motion]}" if opts[:pct_motion]
+      opt_arg += " --pct-trackball #{opts[:pct_trackball]}" if opts[:pct_trackball]
+      opt_arg += " --pct-nav #{opts[:pct_nav]}" if opts[:pct_nav]
+      opt_arg += " --pct-majornav #{opts[:pct_majornav]}" if opts[:pct_majornav]
+      opt_arg += " --pct-appswitch #{opts[:pct_appswitch]}" if opts[:pct_appswitch]
+      opt_arg += " --pct-anyevent #{opts[:pct_anyevent]}" if opts[:pct_anyevent]
+      opt_arg += " -s #{opts[:seed]}" if opts[:seed]
+      opt_arg += " -v -v" if opts[:verbose]
+      opt_arg += " --throttle #{opts[:throttle]}" if opts[:throttle]
+      opt_arg += " #{count}" unless count.nil?
+      
+			run_adb_shell("monkey#{opt_arg}", adb_opts) do |pout|
+				pout.each do |line|
+					@log.debug("{stdout} #{line}") unless @log.nil?
+				end
+			end
+		  return packages
+    end
 
     # Installs a package from the APK file <tt>package</tt> onto the device/emulator.
     # @param [String] package The APK package file

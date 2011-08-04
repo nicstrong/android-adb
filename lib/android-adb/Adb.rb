@@ -2,8 +2,8 @@
 # Copyright:: Copyright (c) 2011 Nic Strong
 # License::   MIT (See LICENSE)
 
-require 'Open3'
-require 'Platform'
+require 'open3'
+require 'platform'
 
 module AndroidAdb
 

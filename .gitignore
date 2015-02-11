@@ -18,3 +18,4 @@ pkg
 examples/t.rb
 .DS_Store
 
+.idea

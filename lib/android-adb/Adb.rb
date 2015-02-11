@@ -121,10 +121,12 @@ module AndroidAdb
     end
 
     def self.find_adb
-      begin
-        which_adb = `which adb`.strip
-        return which_adb if !which_adb.nil? && !which_adb.empty?
-      rescue
+      if (Platform::OS != :win32)
+        begin
+          which_adb = `which adb`.strip
+          return which_adb if !which_adb.nil? && !which_adb.empty?
+        rescue
+        end
       end
       android_home = ENV['ANDROID_HOME']
       if !android_home.nil? && !android_home.empty?

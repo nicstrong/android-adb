@@ -105,7 +105,9 @@ module AndroidAdb
       opt_arg = ""
       opt_arg += " -l" if opts[:forwardlock]
       opt_arg += " -r" if opts[:reinstall]
+      opt_arg += " -t" if opts[:testpackage]
       opt_arg += " -s" if opts[:sdcard]
+      opt_arg += " -g" if opts[:grantperms]
       run_adb("install#{opt_arg} #{package}", adb_opts)
     end
 
@@ -148,6 +150,7 @@ module AndroidAdb
             @log.debug("{stderr} #{line}")
           end
         end
+        # block.call(stdout)
         yield pout
       end
     end

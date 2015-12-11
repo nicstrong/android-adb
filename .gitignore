@@ -23,3 +23,6 @@ examples/t.rb
 *.tws
 
 .idea
+
+/vendor
+*.gem

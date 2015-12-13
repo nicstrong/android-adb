@@ -17,6 +17,12 @@ module AndroidAdb
       @adb = AndroidAdb::Adb.new()
     end
 
+    def launch_app(package)
+      monkey_opts = {:package => package, :category => "android.intent.category.LAUNCHER"}
+      adb_opts = {:serial => name}
+      adb.monkey(1, monkey_opts, adb_opts)
+    end
+
     def usb_install(package, opts = {})
       opt_arg = opts.nil? ? "" : "-"
       opt_arg += "l" if opts[:forwardlock]
@@ -27,9 +33,9 @@ module AndroidAdb
       opt_arg += "g" if opts[:grantperms]
 
       command = "install #{opt_arg} #{package}"
-      adb_opts = {:serial => "#{name}"}
+      adb_opts = {:serial => name}
 
-      adb.run_adb(command, adb_opts) {|pout| pout}
+      adb.run_adb(command, adb_opts) {|pout| pout.read}
     end
 
     def usb_uninstall(package_name, opt = {})
@@ -37,7 +43,7 @@ module AndroidAdb
       command = "uninstall #{opt} #{package_name}"
       adb_opts = {:serial => name}
 
-      adb.run_adb(command, adb_opts) {|pout| pout}
+      adb.run_adb(command, adb_opts) {|pout| pout.read}
     end
   end # class
 end # module

@@ -74,6 +74,7 @@ module AndroidAdb
 		def monkey(count, opts = {}, adb_opts = {})
       opt_arg = ""
       opt_arg += " -p #{opts[:package]}" if opts[:package]
+      opt_arg += " -c #{opts[:category]}" if opts[:category]
       opt_arg += " --pct-touch #{opts[:pct_touch]}" if opts[:pct_touch]
       opt_arg += " --pct-motion #{opts[:pct_motion]}" if opts[:pct_motion]
       opt_arg += " --pct-trackball #{opts[:pct_trackball]}" if opts[:pct_trackball]
@@ -91,7 +92,6 @@ module AndroidAdb
 					@log.debug("{stdout} #{line}") unless @log.nil?
 				end
 			end
-		  return packages
     end
 
     # Installs a package from the APK file <tt>package</tt> onto the device/emulator.

@@ -5,7 +5,6 @@
 module AndroidAdb
   class Device
     attr_accessor :name, :serial
-    attr_reader :adb
 
     # Contructs an Device object.
     #

@@ -101,14 +101,23 @@ module AndroidAdb
     # @option opts [Boolean] :reinstall Reinstall the package, keeping existing data.
     # @option opts [Boolean] :sdcard Install the package to the SD card instead of internal storage.
     # @param [Hash] adb_opts Options for the adb command (@see #run_adb)
-    def install(package, opts = {}, adb_opts = {})
-      opt_arg = ""
-      opt_arg += " -l" if opts[:forwardlock]
-      opt_arg += " -r" if opts[:reinstall]
-      opt_arg += " -t" if opts[:testpackage]
-      opt_arg += " -s" if opts[:sdcard]
-      opt_arg += " -g" if opts[:grantperms]
-      run_adb("install#{opt_arg} #{package}", adb_opts)
+    def install(package_path, opts = {}, adb_opts = {})
+      opt_arg = opts.nil? ? "" : "-"
+      opt_arg += "l" if opts[:forwardlock]
+      opt_arg += "r" if opts[:reinstall]
+      opt_arg += "t" if opts[:testpackage]
+      opt_arg += "s" if opts[:sdcard]
+      opt_arg += "d" if opts[:versiondown]
+      opt_arg += "g" if opts[:grantperms]
+
+      run_adb("install #{opt_arg} #{package_path}", adb_opts) {|stdout| stdout.each_line {|line| print line}}
+    end
+
+    def uninstall(package_name, opts = {}, adb_opts = {})
+      opts = opts[:keepdata] ? "-k" : ""
+      command = "uninstall #{opts} #{package_name}"
+
+      run_adb(command, adb_opts) {|stdout| stdout.each_line {|line| print line}}
     end
 
     # Run the adb command with the give <tt>args</tt>.
@@ -150,7 +159,6 @@ module AndroidAdb
             @log.debug("{stderr} #{line}")
           end
         end
-        # block.call(stdout)
         yield pout
       end
     end

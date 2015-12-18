@@ -11,39 +11,9 @@ module AndroidAdb
     #
     # @param [String] name The name of the device/emulator.
     # @param [String] serial The serial number of the device/emulator.
-    def initialize(name, serial)
+    def initialize(serial, name)
       @name = name
       @serial = serial
-      @adb = AndroidAdb::Adb.new()
-    end
-
-    def launch_app(package)
-      monkey_opts = {:package => package, :category => "android.intent.category.LAUNCHER"}
-      adb_opts = {:serial => name}
-      adb.monkey(1, monkey_opts, adb_opts)
-    end
-
-    def usb_install(package, opts = {})
-      opt_arg = opts.nil? ? "" : "-"
-      opt_arg += "l" if opts[:forwardlock]
-      opt_arg += "r" if opts[:reinstall]
-      opt_arg += "t" if opts[:testpackage]
-      opt_arg += "s" if opts[:sdcard]
-      opt_arg += "d" if opts[:versiondown]
-      opt_arg += "g" if opts[:grantperms]
-
-      command = "install #{opt_arg} #{package}"
-      adb_opts = {:serial => name}
-
-      adb.run_adb(command, adb_opts) {|pout| pout.read}
-    end
-
-    def usb_uninstall(package_name, opt = {})
-      opt = opt[:keepdata] ? "-k" : ""
-      command = "uninstall #{opt} #{package_name}"
-      adb_opts = {:serial => name}
-
-      adb.run_adb(command, adb_opts) {|pout| pout.read}
     end
   end # class
 end # module

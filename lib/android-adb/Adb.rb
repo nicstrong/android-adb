@@ -74,6 +74,7 @@ module AndroidAdb
 		def monkey(count, opts = {}, adb_opts = {})
       opt_arg = ""
       opt_arg += " -p #{opts[:package]}" if opts[:package]
+      opt_arg += " -c #{opts[:category]}" if opts[:category]
       opt_arg += " --pct-touch #{opts[:pct_touch]}" if opts[:pct_touch]
       opt_arg += " --pct-motion #{opts[:pct_motion]}" if opts[:pct_motion]
       opt_arg += " --pct-trackball #{opts[:pct_trackball]}" if opts[:pct_trackball]
@@ -91,7 +92,6 @@ module AndroidAdb
 					@log.debug("{stdout} #{line}") unless @log.nil?
 				end
 			end
-		  return packages
     end
 
     # Installs a package from the APK file <tt>package</tt> onto the device/emulator.
@@ -101,12 +101,23 @@ module AndroidAdb
     # @option opts [Boolean] :reinstall Reinstall the package, keeping existing data.
     # @option opts [Boolean] :sdcard Install the package to the SD card instead of internal storage.
     # @param [Hash] adb_opts Options for the adb command (@see #run_adb)
-    def install(package, opts = {}, adb_opts = {})
-      opt_arg = ""
-      opt_arg += " -l" if opts[:forwardlock]
-      opt_arg += " -r" if opts[:reinstall]
-      opt_arg += " -s" if opts[:sdcard]
-      run_adb("install#{opt_arg} #{package}", adb_opts)
+    def install(package_path, opts = {}, adb_opts = {})
+      opt_arg = opts.nil? ? "" : "-"
+      opt_arg += "l" if opts[:forwardlock]
+      opt_arg += "r" if opts[:reinstall]
+      opt_arg += "t" if opts[:testpackage]
+      opt_arg += "s" if opts[:sdcard]
+      opt_arg += "d" if opts[:versiondown]
+      opt_arg += "g" if opts[:grantperms]
+
+      run_adb("install #{opt_arg} #{package_path}", adb_opts) {|stdout| stdout.each_line {|line| print line}}
+    end
+
+    def uninstall(package_name, opts = {}, adb_opts = {})
+      opts = opts[:keepdata] ? "-k" : ""
+      command = "uninstall #{opts} #{package_name}"
+
+      run_adb(command, adb_opts) {|stdout| stdout.each_line {|line| print line}}
     end
 
     # Run the adb command with the give <tt>args</tt>.

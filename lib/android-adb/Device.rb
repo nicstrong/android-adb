@@ -10,7 +10,7 @@ module AndroidAdb
     #
     # @param [String] name The name of the device/emulator.
     # @param [String] serial The serial number of the device/emulator.
-    def initialize(name, serial)
+    def initialize(serial, name)
       @name = name
       @serial = serial
     end

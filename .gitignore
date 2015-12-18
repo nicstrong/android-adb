@@ -23,5 +23,3 @@ examples/t.rb
 *.tws
 
 .idea
-
-*.gemspec

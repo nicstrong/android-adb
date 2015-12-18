@@ -24,5 +24,4 @@ examples/t.rb
 
 .idea
 
-/vendor
-*.gem
+*.gemspec
